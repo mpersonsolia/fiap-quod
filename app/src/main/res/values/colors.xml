@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#FF000000</color>
+    <color name="border">#FFD3D3D3</color>
+    <color name="border_focused">#FFADD8E6</color>
+    <color name="button">#FF7850FF</color>
+    <color name="text">#FF000000</color>
+    <color name="text_gray">#FFA1A1A1</color>
+
+    <color name="black">#FF000000</color>
+    <color name="green">#FF008000</color>
+    <color name="orange">#FFFFA500</color>
+    <color name="red">#FF0000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FED000</color>
+</resources>
