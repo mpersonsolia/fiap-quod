@@ -1,5 +1,6 @@
 package com.example.quod.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,10 +19,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun SimSwapComTrocaScreen(navController: NavController) {
+    var imei by remember { mutableStateOf("") }
+    var iccid by remember { mutableStateOf("") }
+    var celular by remember { mutableStateOf("") }
+
+    var imeiValido by remember { mutableStateOf(true) }
+    var iccidValido by remember { mutableStateOf(true) }
+    var celularValido by remember { mutableStateOf(true) }
+
     var showMessage by remember { mutableStateOf(false) }
+    var buttonClicked by remember { mutableStateOf(false) }
+
+    var toastMessage by remember { mutableStateOf<String?>(null) }
+
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -35,7 +50,7 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                 .padding(start = 16.dp, top = 16.dp)
         ) {
             IconButton(
-                onClick = {  navController.navigate("sim_swap_screen") },
+                onClick = { navController.navigate("sim_swap_screen") },
                 modifier = Modifier
                     .size(18.dp)
                     .align(Alignment.TopStart)
@@ -54,7 +69,7 @@ fun SimSwapComTrocaScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp)
+                .height(450.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
                 .background(
@@ -79,8 +94,11 @@ fun SimSwapComTrocaScreen(navController: NavController) {
 
             // Campo de IMEI
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = imei,
+                onValueChange = {
+                    imei = it
+                    imeiValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "IMEI *",
@@ -94,13 +112,33 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                ),
+                isError = !imeiValido && buttonClicked
             )
+
+            if (!imeiValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    fontWeight = FontWeight.Bold,
+                    style = TextStyle(
+                        fontFamily = Recursive,
+                        textAlign = TextAlign.Start
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de ICCID
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = iccid,
+                onValueChange = {
+                    iccid = it
+                    iccidValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "ICCID *",
@@ -114,13 +152,33 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                ),
+                isError = !iccidValido && buttonClicked
             )
+
+            if (!iccidValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    fontWeight = FontWeight.Bold,
+                    style = TextStyle(
+                        fontFamily = Recursive,
+                        textAlign = TextAlign.Start
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de Telefone celular
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = celular,
+                onValueChange = {
+                    celular = it
+                    celularValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "Telefone celular *",
@@ -134,15 +192,41 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                ),
+                isError = !celularValido && buttonClicked
             )
+
+            if (!celularValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    fontWeight = FontWeight.Bold,
+                    style = TextStyle(
+                        fontFamily = Recursive,
+                        textAlign = TextAlign.Start
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             // Botão Enviar
             Button(
                 onClick = {
-                    showMessage = true
+                    imeiValido = imei.isNotEmpty()
+                    iccidValido = iccid.isNotEmpty()
+                    celularValido = celular.isNotEmpty()
+
+                    buttonClicked = true
+
+                    if (imeiValido && iccidValido && celularValido) {
+                        showMessage = true
+                        toastMessage = "O SIM do número informado foi trocado."
+                    } else {
+                        toastMessage = "Por favor, preencha todos os campos."
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
                 modifier = Modifier
@@ -160,11 +244,9 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             if (showMessage) {
                 Text(
-                    text = "O SIM do número informado foi trocado.",
+                    text = toastMessage ?: "",
                     fontSize = 14.sp,
                     color = colorResource(id = R.color.red),
                     fontWeight = FontWeight.Bold,
@@ -175,6 +257,13 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+        }
+    }
+
+    // Exibição do Toast com LocalContext.current
+    LaunchedEffect(toastMessage) {
+        toastMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
     }
 }

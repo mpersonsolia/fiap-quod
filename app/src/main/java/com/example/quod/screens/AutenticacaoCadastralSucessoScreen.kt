@@ -248,7 +248,6 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
 
                     buttonClicked = true
 
-                    // Se algum campo estiver vazio, exibe Toast
                     if (!nomeValido || !cpfValido || !enderecoValido || !celularValido) {
                         Toast.makeText(navController.context, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
                     } else {
