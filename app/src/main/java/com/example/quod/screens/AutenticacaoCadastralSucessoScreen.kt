@@ -1,5 +1,6 @@
 package com.example.quod.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,19 @@ import com.example.quod.ui.theme.Recursive
 
 @Composable
 fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
-    var showMessage by remember { mutableStateOf(false) }
+    var nome by remember { mutableStateOf("") }
+    var cpf by remember { mutableStateOf("") }
+    var endereco by remember { mutableStateOf("") }
+    var celular by remember { mutableStateOf("") }
+
+    var nomeValido by remember { mutableStateOf(true) }
+    var cpfValido by remember { mutableStateOf(true) }
+    var enderecoValido by remember { mutableStateOf(true) }
+    var celularValido by remember { mutableStateOf(true) }
+
+    var showSuccessMessage by remember { mutableStateOf(false) }
+
+    var buttonClicked by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -35,7 +48,7 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
                 .padding(start = 16.dp, top = 16.dp)
         ) {
             IconButton(
-                onClick = {  navController.navigate("autenticacao_cadastral_screen") },
+                onClick = { navController.navigate("autenticacao_cadastral_screen") },
                 modifier = Modifier
                     .size(18.dp)
                     .align(Alignment.TopStart)
@@ -54,6 +67,7 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(550.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
                 .background(
@@ -78,8 +92,11 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
 
             // Campo de nome
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = nome,
+                onValueChange = {
+                    nome = it
+                    nomeValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "Nome *",
@@ -92,16 +109,31 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
+                ),
+                isError = !nomeValido && buttonClicked
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            if (!nomeValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de CPF
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = cpf,
+                onValueChange = {
+                    cpf = it
+                    cpfValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "CPF *",
@@ -114,16 +146,31 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
+                ),
+                isError = !cpfValido && buttonClicked
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            if (!cpfValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de endereço
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = endereco,
+                onValueChange = {
+                    endereco = it
+                    enderecoValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "Endereço *",
@@ -136,16 +183,31 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
+                ),
+                isError = !enderecoValido && buttonClicked
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            if (!enderecoValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de celular
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = celular,
+                onValueChange = {
+                    celular = it
+                    celularValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "Celular *",
@@ -158,16 +220,40 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
+                ),
+                isError = !celularValido && buttonClicked
             )
+
+            if (!celularValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             // Botão Enviar
             Button(
                 onClick = {
-                    showMessage = true
+                    nomeValido = nome.isNotEmpty()
+                    cpfValido = cpf.isNotEmpty()
+                    enderecoValido = endereco.isNotEmpty()
+                    celularValido = celular.isNotEmpty()
+
+                    buttonClicked = true
+
+                    // Se algum campo estiver vazio, exibe Toast
+                    if (!nomeValido || !cpfValido || !enderecoValido || !celularValido) {
+                        Toast.makeText(navController.context, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        showSuccessMessage = true
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF6200EE)
@@ -189,7 +275,7 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (showMessage) {
+            if (showSuccessMessage) {
                 Text(
                     text = "Os dados cadastrais informados são autênticos.",
                     fontSize = 14.sp,
@@ -199,7 +285,7 @@ fun AutenticacaoCadastralSucessoScreen(navController: NavController) {
                         fontFamily = Recursive,
                         textAlign = TextAlign.Center
                     ),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }

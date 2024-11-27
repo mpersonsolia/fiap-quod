@@ -11,6 +11,7 @@ import com.example.quod.screens.AnaliseDocumentoScreen
 import com.example.quod.screens.AnaliseDocumentoSucessoScreen
 import com.example.quod.screens.AutenticacaoCadastralFalhaScreen
 import com.example.quod.screens.AutenticacaoCadastralSucessoScreen
+import com.example.quod.screens.EsqueciMinhaSenhaScreen
 import com.example.quod.screens.LoginScreen
 import com.example.quod.screens.ScoreAntiFraudeScreen
 import com.example.quod.screens.SimSwapComTrocaScreen
@@ -27,6 +28,9 @@ fun AppNavHost() {
     ) {
         composable("login_screen") {
             LoginScreen(navController = navController)
+        }
+        composable("esqueci_minha_senha_screen") {
+            EsqueciMinhaSenhaScreen(navController = navController)
         }
         composable("dashboard_screen") {
             DashboardScreen(navController = navController)

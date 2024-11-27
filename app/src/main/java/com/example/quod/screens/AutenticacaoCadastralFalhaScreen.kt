@@ -1,5 +1,6 @@
 package com.example.quod.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -21,7 +21,27 @@ import com.example.quod.ui.theme.Recursive
 
 @Composable
 fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
-    var showMessage by remember { mutableStateOf(false) }
+    var nome by remember { mutableStateOf("") }
+    var cpf by remember { mutableStateOf("") }
+    var endereco by remember { mutableStateOf("") }
+    var celular by remember { mutableStateOf("") }
+
+    var nomeValido by remember { mutableStateOf(true) }
+    var cpfValido by remember { mutableStateOf(true) }
+    var enderecoValido by remember { mutableStateOf(true) }
+    var celularValido by remember { mutableStateOf(true) }
+
+    var buttonClicked by remember { mutableStateOf(false) }
+    var showSuccessMessage by remember { mutableStateOf(false) }
+
+    // Função para mostrar o Toast
+    fun showToast(message: String) {
+        Toast.makeText(
+            navController.context,
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 
     Box(
         modifier = Modifier
@@ -35,7 +55,7 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 .padding(start = 16.dp, top = 16.dp)
         ) {
             IconButton(
-                onClick = {  navController.navigate("autenticacao_cadastral_screen") },
+                onClick = { navController.navigate("autenticacao_cadastral_screen") },
                 modifier = Modifier
                     .size(18.dp)
                     .align(Alignment.TopStart)
@@ -54,6 +74,7 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(550.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
                 .background(
@@ -78,8 +99,11 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
 
             // Campo de nome
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = nome,
+                onValueChange = {
+                    nome = it
+                    nomeValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "Nome *",
@@ -93,15 +117,28 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                ),
+                isError = !nomeValido && buttonClicked
             )
+
+            if (!nomeValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             // Campo de CPF
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = cpf,
+                onValueChange = {
+                    cpf = it
+                    cpfValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "CPF *",
@@ -115,15 +152,28 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                ),
+                isError = !cpfValido && buttonClicked
             )
+
+            if (!cpfValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             // Campo de endereço
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = endereco,
+                onValueChange = {
+                    endereco = it
+                    enderecoValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "Endereço *",
@@ -137,15 +187,28 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                ),
+                isError = !enderecoValido && buttonClicked
             )
+
+            if (!enderecoValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             // Campo de celular
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = celular,
+                onValueChange = {
+                    celular = it
+                    celularValido = it.isNotEmpty()
+                },
                 label = {
                     Text(
                         "Celular *",
@@ -159,21 +222,42 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
-                )
+                ),
+                isError = !celularValido && buttonClicked
             )
+
+            if (!celularValido && buttonClicked) {
+                Text(
+                    text = "Campo de preenchimento obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             // Botão Enviar
             Button(
                 onClick = {
-                    showMessage = true
+                    nomeValido = nome.isNotEmpty()
+                    cpfValido = cpf.isNotEmpty()
+                    enderecoValido = endereco.isNotEmpty()
+                    celularValido = celular.isNotEmpty()
+
+                    buttonClicked = true
+                    if (nomeValido && cpfValido && enderecoValido && celularValido) {
+                        showSuccessMessage = true
+                    } else {
+                        showToast("Por favor, preencha todos os campos.")
+                    }
                 },
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorResource(id = R.color.button)
+                ),
                 modifier = Modifier
                     .width(150.dp)
-                    .height(48.dp)
-                    .align(Alignment.CenterHorizontally),
+                    .height(48.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
@@ -185,19 +269,13 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            if (showMessage) {
+            if (showSuccessMessage) {
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "Os dados cadastrais informados não são autênticos.",
                     fontSize = 14.sp,
                     color = colorResource(id = R.color.red),
-                    fontWeight = FontWeight.Bold,
-                    style = TextStyle(
-                        fontFamily = Recursive,
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier.fillMaxWidth()
+                    textAlign = TextAlign.Center
                 )
             }
         }

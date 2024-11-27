@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +28,8 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
     var showMessage by remember { mutableStateOf(false) }
     var documentPhoto by remember { mutableStateOf(false) }
     var facePhoto by remember { mutableStateOf(false) }
+    var documentPhotoError by remember { mutableStateOf(false) }
+    var facePhotoError by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -61,6 +62,7 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(550.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
                 .background(
@@ -71,7 +73,7 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Adicione os dados e clique no botão Enviar.",
+                text = "Adicione os dados e clique no botão Enviar",
                 fontSize = 16.sp,
                 color = colorResource(id = R.color.text),
                 style = TextStyle(
@@ -87,6 +89,7 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
             Button(
                 onClick = {
                     documentPhoto = true
+                    documentPhotoError = false
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
@@ -96,6 +99,15 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
                     text = "Capturar Foto do Documento",
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.white)
+                )
+            }
+
+            if (documentPhotoError) {
+                Text(
+                    text = "Envio obrigatório.",
+                    color = colorResource(id = R.color.red),
+                    fontSize = 12.sp,
+                    modifier = Modifier.align(Alignment.Start)
                 )
             }
 
@@ -117,6 +129,7 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
             Button(
                 onClick = {
                     facePhoto = true
+                    facePhotoError = false
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
@@ -126,6 +139,15 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
                     text = "Capturar Foto do Rosto",
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.white)
+                )
+            }
+
+            if (facePhotoError) {
+                Text(
+                    text = "Envio obrigatório.",
+                    color = colorResource(id = R.color.red),
+                    fontSize = 12.sp,
+                    modifier = Modifier.align(Alignment.Start)
                 )
             }
 
@@ -147,10 +169,24 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
             // Botão Enviar
             Button(
                 onClick = {
-                    if (documentPhoto && facePhoto) {
-                        showMessage = true
+                    var hasError = false
+                    if (!documentPhoto) {
+                        documentPhotoError = true
+                        hasError = true
+                    }
+                    if (!facePhoto) {
+                        facePhotoError = true
+                        hasError = true
+                    }
+
+                    if (hasError) {
+                        Toast.makeText(
+                            context,
+                            "Por favor, capture foto do documento e do rosto.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
-                        Toast.makeText(context, "Por favor, carregue o documento e capture o rosto.", Toast.LENGTH_SHORT).show()
+                        showMessage = true
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
@@ -168,6 +204,7 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
                     style = TextStyle(fontFamily = Recursive)
                 )
             }
+
 
             Spacer(modifier = Modifier.height(16.dp))
 

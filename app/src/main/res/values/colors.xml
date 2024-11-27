@@ -4,6 +4,7 @@
     <color name="border">#FFD3D3D3</color>
     <color name="border_focused">#FFADD8E6</color>
     <color name="button">#FF7850FF</color>
+    <color name="link">#FF007BFF</color>
     <color name="text">#FF000000</color>
     <color name="text_gray">#FFA1A1A1</color>
 

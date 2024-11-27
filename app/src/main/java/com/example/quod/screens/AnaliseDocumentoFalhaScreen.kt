@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,9 +25,14 @@ import com.example.quod.ui.theme.Recursive
 @Composable
 fun AnaliseDocumentoFalhaScreen(navController: NavController) {
     val context = LocalContext.current
-    var showMessage by remember { mutableStateOf(false) }
     var documentPhoto by remember { mutableStateOf(false) }
     var facePhoto by remember { mutableStateOf(false) }
+
+    var documentPhotoValid by remember { mutableStateOf(true) }
+    var facePhotoValid by remember { mutableStateOf(true) }
+
+    var buttonClicked by remember { mutableStateOf(false) }
+    var showMessage by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -61,6 +65,7 @@ fun AnaliseDocumentoFalhaScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(550.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
                 .background(
@@ -71,7 +76,7 @@ fun AnaliseDocumentoFalhaScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Adicione os dados e clique no botão Enviar.",
+                text = "Adicione os dados e clique no botão Enviar",
                 fontSize = 16.sp,
                 color = colorResource(id = R.color.text),
                 style = TextStyle(
@@ -87,6 +92,7 @@ fun AnaliseDocumentoFalhaScreen(navController: NavController) {
             Button(
                 onClick = {
                     documentPhoto = true
+                    documentPhotoValid = true
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
@@ -96,6 +102,15 @@ fun AnaliseDocumentoFalhaScreen(navController: NavController) {
                     text = "Capturar Foto do Documento",
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.white)
+                )
+            }
+
+            if (!documentPhotoValid && buttonClicked) {
+                Text(
+                    text = "Envio obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
                 )
             }
 
@@ -114,9 +129,11 @@ fun AnaliseDocumentoFalhaScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Upload da foto do rosto
             Button(
                 onClick = {
                     facePhoto = true
+                    facePhotoValid = true
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
@@ -126,6 +143,15 @@ fun AnaliseDocumentoFalhaScreen(navController: NavController) {
                     text = "Capturar Foto do Rosto",
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.white)
+                )
+            }
+
+            if (!facePhotoValid && buttonClicked) {
+                Text(
+                    text = "Envio obrigatório.",
+                    fontSize = 12.sp,
+                    color = colorResource(id = R.color.red),
+                    modifier = Modifier.align(Alignment.Start)
                 )
             }
 
@@ -147,10 +173,18 @@ fun AnaliseDocumentoFalhaScreen(navController: NavController) {
             // Botão Enviar
             Button(
                 onClick = {
-                    if (documentPhoto && facePhoto) {
+                    buttonClicked = true
+                    documentPhotoValid = documentPhoto
+                    facePhotoValid = facePhoto
+
+                    if (documentPhotoValid && facePhotoValid) {
                         showMessage = true
                     } else {
-                        Toast.makeText(context, "Por favor, carregue o documento e capture o rosto.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Por favor, capture foto do documento e do rosto.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),

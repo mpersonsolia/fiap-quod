@@ -84,7 +84,7 @@ fun AutenticacaoCadastralScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black)
+                .background(color = colorResource(id = R.color.background))
                 .padding(paddingValues)
         ) {
             // Ícone de voltar

@@ -54,6 +54,7 @@ fun SimSwapComTrocaScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(400.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
                 .background(

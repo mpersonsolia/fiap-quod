@@ -1,22 +1,28 @@
 package com.example.quod.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -25,6 +31,8 @@ import com.example.quod.ui.theme.Recursive
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    val context = LocalContext.current
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -59,15 +67,24 @@ fun LoginScreen(navController: NavController) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Informe suas credenciais para se logar",
-                fontSize = 16.sp,
-                color = colorResource(id = R.color.text),
-                style = TextStyle(
-                    fontFamily = Recursive,
-                    fontWeight = FontWeight.Normal
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Informe suas credenciais para se logar",
+                    fontSize = 16.sp,
+                    color = colorResource(id = R.color.text),
+                    style = TextStyle(
+                        fontFamily = Recursive,
+                        fontWeight = FontWeight.Normal
+                    ),
+                    textAlign = TextAlign.Center
                 )
-            )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -120,7 +137,7 @@ fun LoginScreen(navController: NavController) {
             Text(
                 text = "Esqueci minha senha",
                 fontSize = 14.sp,
-                color = Color.Blue,
+                color = colorResource(id = R.color.link),
                 style = TextStyle(
                     fontFamily = Recursive,
                     fontWeight = FontWeight.Normal
@@ -128,7 +145,7 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .clickable {
-                        // Ação de "Esqueci minha senha"
+                        navController.navigate("esqueci_minha_senha_screen")
                     }
             )
 
@@ -157,9 +174,19 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto explicativo
+            // Texto explicativo com link clicável
             Text(
-                text = "Ao entrar você está de acordo com os Termos de Uso e Política de Privacidade",
+                text = buildAnnotatedString {
+                    append("Ao entrar você está de acordo com os ")
+                    pushStringAnnotation(
+                        tag = "URL",
+                        annotation = "https://www.quod.com.br/dist/files/Termos-quod.pdf"
+                    )
+                    withStyle(style = SpanStyle(color = colorResource(id = R.color.link), fontWeight = FontWeight.Bold)) {
+                        append("Termos de Uso e Política de Privacidade")
+                    }
+                    pop()
+                },
                 fontSize = 12.sp,
                 color = colorResource(id = R.color.text),
                 textAlign = TextAlign.Center,
@@ -169,6 +196,13 @@ fun LoginScreen(navController: NavController) {
                 ),
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
+                    .clickable {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://www.quod.com.br/dist/files/Termos-quod.pdf")
+                        )
+                        context.startActivity(intent)
+                    }
             )
         }
     }

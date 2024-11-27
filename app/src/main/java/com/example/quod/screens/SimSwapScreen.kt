@@ -121,7 +121,7 @@ fun SimSwapScreen(navController: NavController) {
 
             // Título
             Text(
-                text = "SIM Swap",
+                text = "SIM SWAP",
                 style = TextStyle(
                     color = colorResource(id = R.color.white),
                     fontSize = 20.sp,
