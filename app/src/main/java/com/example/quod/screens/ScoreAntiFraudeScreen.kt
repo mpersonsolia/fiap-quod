@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun ScoreAntiFraudeScreen(navController: NavController) {
@@ -30,6 +31,9 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
     var score by remember { mutableStateOf(0) }
     var scoreMessage by remember { mutableStateOf("") }
     var scoreColor by remember { mutableStateOf(Color(0xFFA1A1A1)) }
+    var errorMessage by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
 
     // Validação de CPF
     fun isCPFValid(cpf: String): Boolean {
@@ -121,7 +125,7 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Informe o CPF e clique no botão Enviar.",
+                text = "Informe o CPF e clique no botão Enviar",
                 fontSize = 16.sp,
                 color = colorResource(id = R.color.text),
                 style = TextStyle(
@@ -158,10 +162,12 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
 
             if (cpfError) {
                 Text(
-                    text = "O CPF informado é inválido.",
+                    text = errorMessage,
                     color = colorResource(id = R.color.red),
                     fontSize = 12.sp,
-                    modifier = Modifier.align(Alignment.Start).padding(top = 4.dp)
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(top = 4.dp)
                 )
             }
 
@@ -172,41 +178,51 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Botão de Enviar
+
             Button(
                 onClick = {
                     val cleanCPF = cpf.filter { it.isDigit() }
 
-                    if (cleanCPF.isBlank()) {
-                        Toast.makeText(navController.context, "Por favor, preencha o campo do CPF.", Toast.LENGTH_SHORT).show()
-                        cpfError = true
-                        score = 0
-                        scoreMessage = ""
-                    } else if (!isCPFValid(cleanCPF)) {
-                        cpfError = true
-                        score = 0
-                        scoreMessage = ""
-                    } else {
-                        cpfError = false
-                        cpf = applyCPFMask(cleanCPF)
-                        score = (0..1000).random()
-                        scoreMessage = when (score) {
-                            in 0..300 -> {
-                                scoreColor = Color(0xFFFF0000)
-                                "Muito alta probabilidade de inadimplência e muito baixa chance de crédito."
+                    when {
+                        cleanCPF.isBlank() -> {
+                            cpfError = true
+                            errorMessage = "Campo de preenchimento obrigatório."
+                            scoreMessage = "" // Reseta o ScoreMeter
+                            scoreColor = Color(0xFFA1A1A1) // Cor padrão
+                            score = 0 // Valor inicial do ScoreMeter
+                        }
+                        !isCPFValid(cleanCPF) -> {
+                            cpfError = true
+                            errorMessage = "O CPF informado é inválido."
+                            scoreMessage = "" // Reseta o ScoreMeter
+                            scoreColor = Color(0xFFA1A1A1) // Cor padrão
+                            score = 0 // Valor inicial do ScoreMeter
+                        }
+                        else -> {
+                            cpfError = false
+                            errorMessage = ""
+                            cpf = applyCPFMask(cleanCPF)
+                            score = (0..1000).random()
+                            scoreMessage = when (score) {
+                                in 0..300 -> {
+                                    scoreColor = Color(0xFFFF0000)
+                                    "Muito alta probabilidade de inadimplência e muito baixa chance de crédito."
+                                }
+                                in 301..500 -> {
+                                    scoreColor = Color(0xFFFED000)
+                                    "Alta probabilidade de inadimplência e baixa chance de crédito."
+                                }
+                                in 501..700 -> {
+                                    scoreColor = Color(0xFFFFA500)
+                                    "Baixa probabilidade de inadimplência e alta chance de crédito."
+                                }
+                                in 701..1000 -> {
+                                    scoreColor = Color(0xFF008000)
+                                    "Muito baixa probabilidade de inadimplência e muito alta chance de crédito."
+                                }
+                                else -> ""
                             }
-                            in 301..500 -> {
-                                scoreColor = Color(0xFFFED000)
-                                "Alta probabilidade de inadimplência e baixa chance de crédito."
-                            }
-                            in 501..700 -> {
-                                scoreColor = Color(0xFFFFA500)
-                                "Baixa probabilidade de inadimplência e alta chance de crédito."
-                            }
-                            in 701..1000 -> {
-                                scoreColor = Color(0xFF008000)
-                                "Muito baixa probabilidade de inadimplência e muito alta chance de crédito."
-                            }
-                            else -> ""
                         }
                     }
                 },
@@ -241,6 +257,7 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
         }
     }
 }
+
 
 @Composable
 fun ScoreMeter(score: Int) {

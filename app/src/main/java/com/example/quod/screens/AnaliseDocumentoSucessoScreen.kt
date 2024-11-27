@@ -182,7 +182,7 @@ fun AnaliseDocumentoSucessoScreen(navController: NavController) {
                     if (hasError) {
                         Toast.makeText(
                             context,
-                            "Por favor, capture foto do documento e do rosto.",
+                            "Por favor, capture as fotos do documento e do rosto.",
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {

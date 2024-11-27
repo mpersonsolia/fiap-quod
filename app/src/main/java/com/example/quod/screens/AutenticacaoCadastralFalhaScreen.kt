@@ -34,7 +34,6 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
     var buttonClicked by remember { mutableStateOf(false) }
     var showSuccessMessage by remember { mutableStateOf(false) }
 
-    // Função para mostrar o Toast
     fun showToast(message: String) {
         Toast.makeText(
             navController.context,
