@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dashboard.AutenticacaoCadastralScreen
 import com.example.dashboard.DashboardScreen
+import com.example.dashboard.TermoDeUsoScreen
 import com.example.quod.screens.AnaliseDocumentoFalhaScreen
 import com.example.quod.screens.AnaliseDocumentoScreen
 import com.example.quod.screens.AnaliseDocumentoSucessoScreen
@@ -34,6 +35,9 @@ fun AppNavHost() {
         }
         composable("dashboard_screen") {
             DashboardScreen(navController = navController)
+        }
+        composable("termo_de_uso_screen") {
+            TermoDeUsoScreen(navController = navController)
         }
         composable("autenticacao_cadastral_screen") {
             AutenticacaoCadastralScreen(navController = navController)
@@ -65,26 +69,6 @@ fun AppNavHost() {
         composable("score_anti_fraude_screen") {
             ScoreAntiFraudeScreen(navController = navController)
         }
-//        composable("sim_swap_com_troca_screen") {
-//            SimSwapComTrocaScreen(navController = navController)
-//        }
-//        composable("sim_swap_sem_troca_screen") {
-//            SimSwapSemTrocaScreen(navController = navController)
-//        }
-
-//        composable("biometriaFacial") {
-//            BiometriaFacialScreen()
-//        }
-//        composable("biometriaDigital") {
-//            BiometriaDigitalScreen()
-//        }
-//        composable("analiseDocumento") {
-//            AnaliseDocumentoScreen()
-//        }
-//        composable("simSwap") {
-//            SimSwapScreen()
-//        }
-//        composable("scoreAntifraude") {
-//            ScoreAntifraudeScreen()
+//
     }
 }

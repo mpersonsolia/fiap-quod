@@ -43,14 +43,14 @@ fun DashboardScreen(navController: NavController) {
     Scaffold(
         bottomBar = {
             NavigationBar(
-                containerColor = Color.White,
+                containerColor = colorResource(id = R.color.white),
                 modifier = Modifier
                     .height(56.dp)
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
             ) {
                 NavigationBarItem(
                     selected = true,
-                    onClick = { /* Navegar */ },
+                    onClick = { navController.navigate("dashboard_screen") },
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_home),
@@ -61,7 +61,7 @@ fun DashboardScreen(navController: NavController) {
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = { /* Navegar */ },
+                    onClick = {navController.navigate("termo_de_uso_screen") },
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_terms),
@@ -70,10 +70,9 @@ fun DashboardScreen(navController: NavController) {
                         )
                     }
                 )
-
                 NavigationBarItem(
                     selected = false,
-                    onClick = {navController.navigate("login_screen")},
+                    onClick = { navController.navigate("login_screen") },
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_logout),
@@ -88,7 +87,7 @@ fun DashboardScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black)
+                .background(color = colorResource(id = R.color.background))
                 .padding(paddingValues)
         ) {
             Image(
@@ -113,9 +112,7 @@ fun DashboardScreen(navController: NavController) {
             ) {
                 items(itemsList) { item ->
                     Button(
-                        onClick = {
-                            navController.navigate(item.route)
-                        },
+                        onClick = { navController.navigate(item.route) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(130.dp)

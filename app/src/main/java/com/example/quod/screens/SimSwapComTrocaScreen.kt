@@ -1,6 +1,5 @@
 package com.example.quod.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
-import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun SimSwapComTrocaScreen(navController: NavController) {
@@ -35,8 +33,6 @@ fun SimSwapComTrocaScreen(navController: NavController) {
     var buttonClicked by remember { mutableStateOf(false) }
 
     var toastMessage by remember { mutableStateOf<String?>(null) }
-
-    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -244,6 +240,8 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                 )
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             if (showMessage) {
                 Text(
                     text = toastMessage ?: "",
@@ -257,13 +255,6 @@ fun SimSwapComTrocaScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-        }
-    }
-
-    // Exibição do Toast com LocalContext.current
-    LaunchedEffect(toastMessage) {
-        toastMessage?.let {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         }
     }
 }

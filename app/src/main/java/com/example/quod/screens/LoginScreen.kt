@@ -9,9 +9,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -28,10 +29,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
+import android.widget.Toast
 
 @Composable
 fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
+
+    val email = remember { mutableStateOf("") }
+    val emailError = remember { mutableStateOf<String?>(null) }
+    val password = remember { mutableStateOf("") }
+    val passwordError = remember { mutableStateOf<String?>(null) }
 
     Box(
         modifier = Modifier
@@ -50,16 +57,16 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier
                 .size(180.dp)
                 .align(Alignment.TopCenter)
-                .padding(top = 40.dp)
+                .padding(top = 50.dp)
         )
-
-        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .height(410.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
+                .offset(y = 60.dp)
                 .background(
                     color = colorResource(id = R.color.white),
                     shape = RoundedCornerShape(16.dp)
@@ -90,8 +97,11 @@ fun LoginScreen(navController: NavController) {
 
             // Campo de email
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = email.value,
+                onValueChange = {
+                    email.value = it
+                    emailError.value = null
+                },
                 label = {
                     Text(
                         "Email",
@@ -102,18 +112,31 @@ fun LoginScreen(navController: NavController) {
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
+                isError = emailError.value != null,
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
+                    unfocusedBorderColor = if (emailError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border),
+                    focusedBorderColor = if (emailError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border_focused)
                 )
             )
+
+            if (emailError.value != null) {
+                Text(
+                    text = emailError.value!!,
+                    color = colorResource(id = R.color.red),
+                    fontSize = 12.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             // Campo de senha
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = password.value,
+                onValueChange = {
+                    password.value = it
+                    passwordError.value = null
+                },
                 label = {
                     Text(
                         "Senha",
@@ -125,13 +148,24 @@ fun LoginScreen(navController: NavController) {
                 },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
+                isError = passwordError.value != null,
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
+                    unfocusedBorderColor = if (passwordError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border),
+                    focusedBorderColor = if (passwordError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border_focused)
                 )
             )
 
+            if (passwordError.value != null) {
+                Text(
+                    text = passwordError.value!!,
+                    color = colorResource(id = R.color.red),
+                    fontSize = 12.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             // Texto "Esqueci minha senha"
             Text(
@@ -154,7 +188,26 @@ fun LoginScreen(navController: NavController) {
             // Botão Entrar
             Button(
                 onClick = {
-                    navController.navigate("dashboard_screen")
+                    var hasError = false
+
+                    if (email.value.isBlank()) {
+                        emailError.value = "Campo de preenchimento obrigatório."
+                        hasError = true
+                    }
+                    if (password.value.isBlank()) {
+                        passwordError.value = "Campo de preenchimento obrigatório."
+                        hasError = true
+                    }
+
+                    if (hasError) {
+                        Toast.makeText(
+                            context,
+                            "Por favor, preencha os campos obrigatórios.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        navController.navigate("dashboard_screen")
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
                 modifier = Modifier
@@ -174,7 +227,7 @@ fun LoginScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Texto explicativo com link clicável
+            // Termos e Políticas
             Text(
                 text = buildAnnotatedString {
                     append("Ao entrar você está de acordo com os ")

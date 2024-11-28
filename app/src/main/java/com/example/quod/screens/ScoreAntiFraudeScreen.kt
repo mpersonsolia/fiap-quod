@@ -1,6 +1,5 @@
 package com.example.quod.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -32,8 +31,6 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
     var scoreMessage by remember { mutableStateOf("") }
     var scoreColor by remember { mutableStateOf(Color(0xFFA1A1A1)) }
     var errorMessage by remember { mutableStateOf("") }
-
-    val context = LocalContext.current
 
     // Validação de CPF
     fun isCPFValid(cpf: String): Boolean {
@@ -179,7 +176,6 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Botão de Enviar
-
             Button(
                 onClick = {
                     val cleanCPF = cpf.filter { it.isDigit() }
@@ -257,7 +253,6 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
         }
     }
 }
-
 
 @Composable
 fun ScoreMeter(score: Int) {
