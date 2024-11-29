@@ -21,7 +21,9 @@ import com.example.quod.screens.SimSwapSemTrocaScreen
 import com.example.quod.screens.BiometriaFacialFalhaScreen
 import com.example.quod.screens.BiometriaFacialSucessoScreen
 import com.example.quod.screens.BiometriaFacialScreen
-
+import com.example.quod.screens.BiometriaDigitalFalhaScreen
+import com.example.quod.screens.BiometriaDigitalSucessoScreen
+import com.example.quod.screens.BiometriaDigitalScreen
 
 @Composable
 fun AppNavHost() {
@@ -84,6 +86,18 @@ fun AppNavHost() {
 
         composable("biometria_facial_falha_screen") {
             BiometriaFacialFalhaScreen(navController = navController)
+        }
+
+        composable("biometria_digital_screen") {
+            BiometriaDigitalScreen(navController = navController)
+        }
+
+        composable("biometria_digital_sucesso_screen") {
+            BiometriaDigitalSucessoScreen(navController = navController)
+        }
+
+        composable("biometria_digital_falha_screen") {
+            BiometriaDigitalFalhaScreen(navController = navController)
         }
 
 //

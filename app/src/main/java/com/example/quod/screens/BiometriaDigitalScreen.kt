@@ -1,4 +1,5 @@
-package com.example.dashboard
+package com.example.quod.screens
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,24 +21,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.dashboard.AutenticacaoCadastralItem
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
 
-data class GridItem(
+data class BiometriaDigitalItem(
     val name: String,
     val iconResId: Int,
     val route: String
 )
 
 @Composable
-fun DashboardScreen(navController: NavController) {
+fun BiometriaDigitalScreen(navController: NavController) {
     val itemsList = listOf(
-        GridItem("Biometria Facial", R.drawable.icon_facial, "biometria_facial_screen"),
-        GridItem("Biometria Digital", R.drawable.icon_digital, "biometria_digital_screen"),
-        GridItem("Análise de Documento", R.drawable.icon_documento, "analise_documento_screen"),
-        GridItem("SIM SWAP", R.drawable.icon_sim, "sim_swap_screen"),
-        GridItem("Autenticação Cadastral", R.drawable.icon_autenticacao_cadastral, "autenticacao_cadastral_screen"),
-        GridItem("Score Antifraude", R.drawable.icon_score, "score_anti_fraude_screen")
+        AutenticacaoCadastralItem("Sucesso", R.drawable.icon_success, "biometria_digital_sucesso_screen"),
+        AutenticacaoCadastralItem("Falha", R.drawable.icon_fail, "biometria_digital_falha_screen")
     )
 
     Scaffold(
@@ -49,7 +47,7 @@ fun DashboardScreen(navController: NavController) {
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
             ) {
                 NavigationBarItem(
-                    selected = true,
+                    selected = false,
                     onClick = { navController.navigate("dashboard_screen") },
                     icon = {
                         Icon(
@@ -61,7 +59,7 @@ fun DashboardScreen(navController: NavController) {
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = {navController.navigate("termo_de_uso_screen") },
+                    onClick = { /* Navegar */ },
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_terms),
@@ -70,6 +68,7 @@ fun DashboardScreen(navController: NavController) {
                         )
                     }
                 )
+
                 NavigationBarItem(
                     selected = false,
                     onClick = { navController.navigate("login_screen") },
@@ -87,9 +86,30 @@ fun DashboardScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = colorResource(id = R.color.background))
+                .background(Color.Black)
                 .padding(paddingValues)
         ) {
+            // Ícone de voltar
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 16.dp)
+            ) {
+                IconButton(
+                    onClick = {  navController.navigate("dashboard_screen")},
+                    modifier = Modifier
+                        .size(18.dp)
+                        .align(Alignment.TopStart)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_back),
+                        contentDescription = "Voltar",
+                        tint = colorResource(id = R.color.white),
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+
             Image(
                 painter = painterResource(id = R.drawable.logo_quod_white),
                 contentDescription = "Logo Quod",
@@ -101,6 +121,20 @@ fun DashboardScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            // Título
+            Text(
+                text = "Biometria Digital",
+                style = TextStyle(
+                    color = colorResource(id = R.color.white),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = Recursive
+                ),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 25.dp)
+            )
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier
@@ -111,15 +145,24 @@ fun DashboardScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(itemsList) { item ->
+
+                    val buttonColor = when (item.name) {
+                        "Falha" -> colorResource(id = R.color.red)
+                        "Sucesso" -> colorResource(id = R.color.green)
+                        else -> colorResource(id = R.color.button)
+                    }
+
                     Button(
-                        onClick = { navController.navigate(item.route) },
+                        onClick = {
+                            navController.navigate(item.route)
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(130.dp)
-                            .background(Color(0xFF7850FF), shape = RoundedCornerShape(16.dp)),
+                            .height(130.dp),
                         contentPadding = PaddingValues(0.dp),
+                        shape = RoundedCornerShape(16.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(id = R.color.button),
+                            containerColor = buttonColor,
                             contentColor = colorResource(id = R.color.white)
                         )
                     ) {
@@ -131,7 +174,7 @@ fun DashboardScreen(navController: NavController) {
                             Icon(
                                 painter = painterResource(id = item.iconResId),
                                 contentDescription = item.name,
-                                tint = Color.White,
+                                tint = colorResource(id = R.color.white),
                                 modifier = Modifier.size(32.dp)
                             )
 
@@ -140,7 +183,7 @@ fun DashboardScreen(navController: NavController) {
                             Text(
                                 text = item.name,
                                 style = TextStyle(
-                                    color = Color.White,
+                                    color = colorResource(id = R.color.white),
                                     fontSize = 15.sp,
                                     fontFamily = Recursive,
                                     fontWeight = FontWeight.Bold
