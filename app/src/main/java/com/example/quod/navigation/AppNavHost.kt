@@ -18,6 +18,10 @@ import com.example.quod.screens.ScoreAntiFraudeScreen
 import com.example.quod.screens.SimSwapComTrocaScreen
 import com.example.quod.screens.SimSwapScreen
 import com.example.quod.screens.SimSwapSemTrocaScreen
+import com.example.quod.screens.BiometriaFacialFalhaScreen
+import com.example.quod.screens.BiometriaFacialSucessoScreen
+import com.example.quod.screens.BiometriaFacialScreen
+
 
 @Composable
 fun AppNavHost() {
@@ -69,6 +73,19 @@ fun AppNavHost() {
         composable("score_anti_fraude_screen") {
             ScoreAntiFraudeScreen(navController = navController)
         }
+
+        composable("biometria_facial_screen") {
+            BiometriaFacialScreen(navController = navController)
+        }
+
+        composable("biometria_facial_sucesso_screen") {
+            BiometriaFacialSucessoScreen(navController = navController)
+        }
+
+        composable("biometria_facial_falha_screen") {
+            BiometriaFacialFalhaScreen(navController = navController)
+        }
+
 //
     }
 }

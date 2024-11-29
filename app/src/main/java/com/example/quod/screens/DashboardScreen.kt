@@ -32,7 +32,7 @@ data class GridItem(
 @Composable
 fun DashboardScreen(navController: NavController) {
     val itemsList = listOf(
-        GridItem("Biometria Facial", R.drawable.icon_facial, "biometriaFacial"),
+        GridItem("Biometria Facial", R.drawable.icon_facial, "biometria_facial_screen"),
         GridItem("Biometria Digital", R.drawable.icon_digital, "biometriaDigital"),
         GridItem("Análise de Documento", R.drawable.icon_documento, "analise_documento_screen"),
         GridItem("SIM SWAP", R.drawable.icon_sim, "sim_swap_screen"),
