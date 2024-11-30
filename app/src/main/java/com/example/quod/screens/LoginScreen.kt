@@ -30,6 +30,9 @@ import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
 import android.widget.Toast
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -116,6 +119,10 @@ fun LoginScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = if (emailError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border),
                     focusedBorderColor = if (emailError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border_focused)
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
+                    imeAction = ImeAction.Done
                 )
             )
 
@@ -152,6 +159,9 @@ fun LoginScreen(navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = if (passwordError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border),
                     focusedBorderColor = if (passwordError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border_focused)
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
                 )
             )
 
@@ -165,7 +175,6 @@ fun LoginScreen(navController: NavController) {
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            Spacer(modifier = Modifier.weight(1f))
 
             // Texto "Esqueci minha senha"
             Text(
