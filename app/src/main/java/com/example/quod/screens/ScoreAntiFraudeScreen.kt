@@ -78,26 +78,6 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
             .fillMaxSize()
             .background(color = colorResource(id = R.color.background))
     ) {
-        // Botão de voltar
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp)
-        ) {
-            IconButton(
-                onClick = { navController.navigate("dashboard_screen") },
-                modifier = Modifier
-                    .size(18.dp)
-                    .align(Alignment.TopStart)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_back),
-                    contentDescription = "Voltar",
-                    tint = colorResource(id = R.color.white),
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-        }
 
         // Título
         Text(
