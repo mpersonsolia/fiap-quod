@@ -3,6 +3,7 @@ package com.example.quod.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -12,6 +13,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +35,16 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
     var buttonClicked by remember { mutableStateOf(false) }
 
     var toastMessage by remember { mutableStateOf<String?>(null) }
+
+    // Máscara do celular
+    fun formatarCelular(celular: String): String {
+        val celularLimpo = celular.replace(Regex("[^\\d]"), "") // Remove qualquer caractere não numérico
+        return when (celularLimpo.length) {
+            11 -> "(${celularLimpo.substring(0, 2)}) ${celularLimpo.substring(2, 7)}-${celularLimpo.substring(7)}"
+            10 -> "(${celularLimpo.substring(0, 2)}) ${celularLimpo.substring(2, 6)}-${celularLimpo.substring(6)}"
+            else -> celular // Retorna o número original se não tiver 10 ou 11 dígitos
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -109,7 +121,11 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
                 ),
-                isError = !imeiValido && buttonClicked
+                isError = !imeiValido && buttonClicked,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
             )
 
             if (!imeiValido && buttonClicked) {
@@ -149,7 +165,11 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
                 ),
-                isError = !iccidValido && buttonClicked
+                isError = !iccidValido && buttonClicked,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
             )
 
             if (!iccidValido && buttonClicked) {
@@ -189,7 +209,11 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
                     unfocusedBorderColor = colorResource(id = R.color.border),
                     focusedBorderColor = colorResource(id = R.color.border_focused)
                 ),
-                isError = !celularValido && buttonClicked
+                isError = !celularValido && buttonClicked,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
             )
 
             if (!celularValido && buttonClicked) {
@@ -214,6 +238,7 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
                     imeiValido = imei.isNotEmpty()
                     iccidValido = iccid.isNotEmpty()
                     celularValido = celular.isNotEmpty()
+                    celular = formatarCelular(celular)
 
                     buttonClicked = true
 
