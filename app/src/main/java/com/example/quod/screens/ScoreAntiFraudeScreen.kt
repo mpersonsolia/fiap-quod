@@ -5,6 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,6 +24,7 @@ import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
 
 @Composable
 fun ScoreAntiFraudeScreen(navController: NavController) {
@@ -154,7 +157,11 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
                     fontFamily = Recursive,
                     color = colorResource(id = R.color.text)
                 ),
-                cursorBrush = SolidColor(colorResource(id = R.color.text))
+                cursorBrush = SolidColor(colorResource(id = R.color.text)),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
             )
 
             if (cpfError) {
