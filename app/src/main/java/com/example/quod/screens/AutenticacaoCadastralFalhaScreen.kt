@@ -4,14 +4,17 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,16 +34,33 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
     var enderecoValido by remember { mutableStateOf(true) }
     var celularValido by remember { mutableStateOf(true) }
 
-    var buttonClicked by remember { mutableStateOf(false) }
     var showSuccessMessage by remember { mutableStateOf(false) }
 
-    fun showToast(message: String) {
-        Toast.makeText(
-            navController.context,
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
+    var buttonClicked by remember { mutableStateOf(false) }
+
+
+    // Máscara no CPF
+    fun applyCPFMask(input: String): String {
+        val digitsOnly = input.filter { it.isDigit() }
+        return buildString {
+            for (i in digitsOnly.indices) {
+                append(digitsOnly[i])
+                if (i == 2 || i == 5) append(".")
+                if (i == 8) append("-")
+            }
+        }
     }
+
+    // Máscara do celular
+    fun formatarCelular(celular: String): String {
+        val celularLimpo = celular.replace(Regex("[^\\d]"), "") // Remove qualquer caractere não numérico
+        return when (celularLimpo.length) {
+            11 -> "(${celularLimpo.substring(0, 2)}) ${celularLimpo.substring(2, 7)}-${celularLimpo.substring(7)}"
+            10 -> "(${celularLimpo.substring(0, 2)}) ${celularLimpo.substring(2, 6)}-${celularLimpo.substring(6)}"
+            else -> celular // Retorna o número original se não tiver 10 ou 11 dígitos
+        }
+    }
+
 
     Box(
         modifier = Modifier
@@ -115,7 +135,9 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
                 ),
                 isError = !nomeValido && buttonClicked
             )
@@ -129,7 +151,7 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de CPF
             OutlinedTextField(
@@ -150,9 +172,17 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
                 ),
-                isError = !cpfValido && buttonClicked
+                isError = !cpfValido && buttonClicked,
+
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
+
             )
 
             if (!cpfValido && buttonClicked) {
@@ -164,7 +194,7 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de endereço
             OutlinedTextField(
@@ -185,7 +215,9 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
                 ),
                 isError = !enderecoValido && buttonClicked
             )
@@ -199,7 +231,7 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             // Campo de celular
             OutlinedTextField(
@@ -220,9 +252,15 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
+                    focusedBorderColor = colorResource(id = R.color.border_focused),
+                    unfocusedLabelColor = colorResource(id = R.color.text),
+                    focusedLabelColor = colorResource(id = R.color.text)
                 ),
-                isError = !celularValido && buttonClicked
+                isError = !celularValido && buttonClicked,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                )
             )
 
             if (!celularValido && buttonClicked) {
@@ -241,22 +279,26 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 onClick = {
                     nomeValido = nome.isNotEmpty()
                     cpfValido = cpf.isNotEmpty()
+                    cpf = applyCPFMask(cpf)
                     enderecoValido = endereco.isNotEmpty()
                     celularValido = celular.isNotEmpty()
+                    celular = formatarCelular(celular)
 
                     buttonClicked = true
-                    if (nomeValido && cpfValido && enderecoValido && celularValido) {
-                        showSuccessMessage = true
+
+                    if (!nomeValido || !cpfValido || !enderecoValido || !celularValido) {
+                        Toast.makeText(navController.context, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
                     } else {
-                        showToast("Por favor, preencha todos os campos.")
+                        showSuccessMessage = true
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.button)
+                    containerColor = Color(0xFF6200EE)
                 ),
                 modifier = Modifier
                     .width(150.dp)
-                    .height(48.dp),
+                    .height(48.dp)
+                    .align(Alignment.CenterHorizontally),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
@@ -268,13 +310,19 @@ fun AutenticacaoCadastralFalhaScreen(navController: NavController) {
                 )
             }
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             if (showSuccessMessage) {
-                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "Os dados cadastrais informados não são autênticos.",
                     fontSize = 14.sp,
                     color = colorResource(id = R.color.red),
-                    textAlign = TextAlign.Center
+                    fontWeight = FontWeight.Bold,
+                    style = TextStyle(
+                        fontFamily = Recursive,
+                        textAlign = TextAlign.Center
+                    ),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }
