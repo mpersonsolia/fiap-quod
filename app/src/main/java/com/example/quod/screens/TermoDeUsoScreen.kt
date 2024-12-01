@@ -1,4 +1,4 @@
-package com.example.dashboard
+package com.example.quod.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -27,16 +27,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun TermoDeUsoScreen(navController: NavController) {
@@ -70,6 +64,17 @@ fun TermoDeUsoScreen(navController: NavController) {
                             contentDescription = "Home",
                             modifier = Modifier.size(24.dp),
                             tint = colorResource(id = R.color.button)
+                        )
+                    }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { navController.navigate("user_screen") },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_user),
+                            contentDescription = "User",
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 )

@@ -1,12 +1,11 @@
 package com.example.quod.navigation
 
+import UserScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.dashboard.AutenticacaoCadastralScreen
-import com.example.dashboard.DashboardScreen
-import com.example.dashboard.TermoDeUsoScreen
 import com.example.quod.screens.AnaliseDocumentoFalhaScreen
 import com.example.quod.screens.AnaliseDocumentoScreen
 import com.example.quod.screens.AnaliseDocumentoSucessoScreen
@@ -24,6 +23,8 @@ import com.example.quod.screens.BiometriaFacialScreen
 import com.example.quod.screens.BiometriaDigitalFalhaScreen
 import com.example.quod.screens.BiometriaDigitalSucessoScreen
 import com.example.quod.screens.BiometriaDigitalScreen
+import com.example.quod.screens.DashboardScreen
+import com.example.quod.screens.TermoDeUsoScreen
 
 @Composable
 fun AppNavHost() {
@@ -44,6 +45,9 @@ fun AppNavHost() {
         }
         composable("termo_de_uso_screen") {
             TermoDeUsoScreen(navController = navController)
+        }
+        composable("user_screen") {
+            UserScreen(navController = navController)
         }
         composable("autenticacao_cadastral_screen") {
             AutenticacaoCadastralScreen(navController = navController)
@@ -75,31 +79,23 @@ fun AppNavHost() {
         composable("score_anti_fraude_screen") {
             ScoreAntiFraudeScreen(navController = navController)
         }
-
         composable("biometria_facial_screen") {
             BiometriaFacialScreen(navController = navController)
         }
-
         composable("biometria_facial_sucesso_screen") {
             BiometriaFacialSucessoScreen(navController = navController)
         }
-
         composable("biometria_facial_falha_screen") {
             BiometriaFacialFalhaScreen(navController = navController)
         }
-
         composable("biometria_digital_screen") {
             BiometriaDigitalScreen(navController = navController)
         }
-
         composable("biometria_digital_sucesso_screen") {
             BiometriaDigitalSucessoScreen(navController = navController)
         }
-
         composable("biometria_digital_falha_screen") {
             BiometriaDigitalFalhaScreen(navController = navController)
         }
-
-//
     }
 }

@@ -1,4 +1,4 @@
-package com.example.dashboard
+package com.example.quod.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -61,6 +61,17 @@ fun DashboardScreen(navController: NavController) {
                 )
                 NavigationBarItem(
                     selected = false,
+                    onClick = { navController.navigate("user_screen") },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_user),
+                            contentDescription = "User",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                )
+                NavigationBarItem(
+                    selected = false,
                     onClick = {navController.navigate("termo_de_uso_screen") },
                     icon = {
                         Icon(
@@ -76,7 +87,7 @@ fun DashboardScreen(navController: NavController) {
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_logout),
-                            contentDescription = "LogOut",
+                            contentDescription = "Sair",
                             modifier = Modifier.size(24.dp)
                         )
                     }
@@ -140,7 +151,7 @@ fun DashboardScreen(navController: NavController) {
                             Text(
                                 text = item.name,
                                 style = TextStyle(
-                                    color = Color.White,
+                                    color = colorResource(id = R.color.white),
                                     fontSize = 15.sp,
                                     fontFamily = Recursive,
                                     fontWeight = FontWeight.Bold
