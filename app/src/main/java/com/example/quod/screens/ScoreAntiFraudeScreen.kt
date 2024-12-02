@@ -1,5 +1,6 @@
 package com.example.quod.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun ScoreAntiFraudeScreen(navController: NavController) {
+    val context = LocalContext.current
     var cpf by remember { mutableStateOf("") }
     var cpfError by remember { mutableStateOf(false) }
     var score by remember { mutableStateOf(0) }
@@ -166,6 +168,12 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
                             scoreMessage = "" // Reseta o ScoreMeter
                             scoreColor = Color(0xFFA1A1A1) // Cor padrão
                             score = 0 // Valor inicial do ScoreMeter
+                            Toast.makeText(
+                                context,
+                                "Campo de preenchimento obrigatório.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
                         }
                         !isCPFValid(cleanCPF) -> {
                             cpfError = true
@@ -173,6 +181,11 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
                             scoreMessage = "" // Reseta o ScoreMeter
                             scoreColor = Color(0xFFA1A1A1) // Cor padrão
                             score = 0 // Valor inicial do ScoreMeter
+                            Toast.makeText(
+                                context,
+                                "O CPF informado é inválido.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         else -> {
                             cpfError = false
@@ -182,19 +195,19 @@ fun ScoreAntiFraudeScreen(navController: NavController) {
                             scoreMessage = when (score) {
                                 in 0..300 -> {
                                     scoreColor = Color(0xFFFF0000)
-                                    "Muito alta probabilidade de inadimplência e muito baixa chance de crédito."
+                                    "Enorme probabilidade de se tratar de uma operação fraudulenta."
                                 }
                                 in 301..500 -> {
                                     scoreColor = Color(0xFFFED000)
-                                    "Alta probabilidade de inadimplência e baixa chance de crédito."
+                                    "Alta probabilidade de se tratar de uma operação fraudulenta."
                                 }
                                 in 501..700 -> {
                                     scoreColor = Color(0xFFFFA500)
-                                    "Baixa probabilidade de inadimplência e alta chance de crédito."
+                                    "Baixa probabilidade de se tratar de uma operação fraudulenta."
                                 }
                                 in 701..1000 -> {
                                     scoreColor = Color(0xFF008000)
-                                    "Muito baixa probabilidade de inadimplência e muito alta chance de crédito."
+                                    "Muito baixa probabilidade de se tratar de uma operação fraudulenta."
                                 }
                                 else -> ""
                             }

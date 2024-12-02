@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +14,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -21,6 +23,10 @@ import com.example.quod.ui.theme.Recursive
 
 @Composable
 fun EsqueciMinhaSenhaScreen(navController: NavController) {
+
+    val emailrec = remember { mutableStateOf("") }
+    val emailrecError = remember { mutableStateOf<String?>(null) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -31,27 +37,6 @@ fun EsqueciMinhaSenhaScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-
-        // Ícone de voltar
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp)
-        ) {
-            IconButton(
-                onClick = { navController.navigate("login_screen") },
-                modifier = Modifier
-                    .size(18.dp)
-                    .align(Alignment.TopStart)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_back),
-                    contentDescription = "Voltar",
-                    tint = colorResource(id = R.color.white),
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-        }
 
         Image(
             painter = painterResource(id = R.drawable.logo_quod_white),
@@ -90,8 +75,11 @@ fun EsqueciMinhaSenhaScreen(navController: NavController) {
 
             // Campo de email
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = emailrec.value,
+                onValueChange = {
+                    emailrec.value = it
+                    emailrecError.value = null
+                },
                 label = {
                     Text(
                         "Email",
@@ -102,11 +90,25 @@ fun EsqueciMinhaSenhaScreen(navController: NavController) {
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
+                isError = emailrecError.value != null,
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = colorResource(id = R.color.border),
-                    focusedBorderColor = colorResource(id = R.color.border_focused)
+                    unfocusedBorderColor = if (emailrecError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border),
+                    focusedBorderColor = if (emailrecError.value != null) colorResource(id = R.color.red) else colorResource(id = R.color.border_focused)
+                ),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Email,
+                    imeAction = ImeAction.Done
                 )
             )
+
+            if (emailrecError.value != null) {
+                Text(
+                    text = emailrecError.value!!,
+                    color = colorResource(id = R.color.red),
+                    fontSize = 12.sp,
+                    modifier = Modifier.align(Alignment.Start)
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 

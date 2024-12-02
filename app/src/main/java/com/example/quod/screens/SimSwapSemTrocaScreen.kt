@@ -20,8 +20,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.quod.R
 import com.example.quod.ui.theme.Recursive
-import androidx.compose.ui.platform.LocalContext
-import android.widget.Toast
 
 @Composable
 fun SimSwapSemTrocaScreen(navController: NavController) {
@@ -33,14 +31,10 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
     var iccidValido by remember { mutableStateOf(true) }
     var celularValido by remember { mutableStateOf(true) }
 
+    var showMessage by remember { mutableStateOf(false) }
     var buttonClicked by remember { mutableStateOf(false) }
-    var showSuccessMessage by remember { mutableStateOf(false) }
 
-    val context = LocalContext.current
-
-    fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
+    var toastMessage by remember { mutableStateOf<String?>(null) }
 
     // Máscara do celular
     fun formatarCelular(celular: String): String {
@@ -63,7 +57,7 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp)
+                .height(450.dp)
                 .padding(horizontal = 24.dp)
                 .align(Alignment.Center)
                 .background(
@@ -228,10 +222,11 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
 
                     buttonClicked = true
 
-                    if (!imeiValido || !iccidValido || !celularValido) {
-                        Toast.makeText(navController.context, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show()
+                    if (imeiValido && iccidValido && celularValido) {
+                        showMessage = true
+                        toastMessage = "O SIM do número informado não foi trocado."
                     } else {
-                        showSuccessMessage = true
+                        toastMessage = "Por favor, preencha todos os campos."
                     }
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
@@ -252,9 +247,9 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            if (showSuccessMessage) {
+            if (showMessage) {
                 Text(
-                    text = "O SIM do número informado não foi trocado.",
+                    text = toastMessage ?: "",
                     fontSize = 14.sp,
                     color = colorResource(id = R.color.green),
                     fontWeight = FontWeight.Bold,
@@ -262,7 +257,7 @@ fun SimSwapSemTrocaScreen(navController: NavController) {
                         fontFamily = Recursive,
                         textAlign = TextAlign.Center
                     ),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
