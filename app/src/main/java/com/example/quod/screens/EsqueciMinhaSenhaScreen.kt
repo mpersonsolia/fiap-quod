@@ -1,5 +1,6 @@
 package com.example.quod.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -24,6 +26,7 @@ import com.example.quod.ui.theme.Recursive
 @Composable
 fun EsqueciMinhaSenhaScreen(navController: NavController) {
 
+    val context = LocalContext.current
     val emailrec = remember { mutableStateOf("") }
     val emailrecError = remember { mutableStateOf<String?>(null) }
 
@@ -115,6 +118,21 @@ fun EsqueciMinhaSenhaScreen(navController: NavController) {
             // Botão Entrar
             Button(
                 onClick = {
+
+                    var hasError = false
+
+                    if (emailrec.value.isBlank()) {
+                        emailrecError.value = "Campo de preenchimento obrigatório."
+                        hasError = true
+                    }
+
+                    if (hasError) {
+                        Toast.makeText(
+                            context,
+                            "Por favor, preencha os campos obrigatórios.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.button)),
