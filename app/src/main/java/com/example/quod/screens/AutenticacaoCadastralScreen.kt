@@ -44,7 +44,7 @@ fun AutenticacaoCadastralScreen(navController: NavController) {
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
             ) {
                 NavigationBarItem(
-                    selected = false,
+                    selected = true,
                     onClick = { navController.navigate("dashboard_screen") },
                     icon = {
                         Icon(
@@ -56,7 +56,18 @@ fun AutenticacaoCadastralScreen(navController: NavController) {
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = { /* Navegar */ },
+                    onClick = { navController.navigate("user_screen") },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_user),
+                            contentDescription = "User",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = {navController.navigate("termo_de_uso_screen") },
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_terms),
@@ -65,14 +76,13 @@ fun AutenticacaoCadastralScreen(navController: NavController) {
                         )
                     }
                 )
-
                 NavigationBarItem(
                     selected = false,
                     onClick = { navController.navigate("login_screen") },
                     icon = {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_logout),
-                            contentDescription = "LogOut",
+                            contentDescription = "Sair",
                             modifier = Modifier.size(24.dp)
                         )
                     }

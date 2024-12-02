@@ -74,7 +74,8 @@ fun TermoDeUsoScreen(navController: NavController) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_user),
                             contentDescription = "User",
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp),
+                            tint = colorResource(id = R.color.button)
                         )
                     }
                 )

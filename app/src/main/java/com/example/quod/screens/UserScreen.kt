@@ -119,7 +119,7 @@ fun UserScreen(navController: NavController) {
                             )
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
 
                         Text(
                             text = "Vendedora Sênior",
@@ -143,7 +143,7 @@ fun UserScreen(navController: NavController) {
                             )
                         )
 
-                        Spacer(modifier = Modifier.height(18.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
 
                         Text(
                             text = "Primeiro acesso: 18/03/2023 às 18:01:23",
@@ -167,7 +167,7 @@ fun UserScreen(navController: NavController) {
                             )
                         )
 
-                        Spacer(modifier = Modifier.height(60.dp))
+                        Spacer(modifier = Modifier.height(40.dp))
 
                         Column(
                             modifier = Modifier
